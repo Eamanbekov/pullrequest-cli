@@ -23,3 +23,5 @@ Then in the project directory
 The Pullrequest-cli can be invoked with `pullrequest-cli` command:
     
     pullrequest-cli <username> <repository-name> [options]
+
+![Usage Example](https://image.ibb.co/n27QtJ/usage.gif)
