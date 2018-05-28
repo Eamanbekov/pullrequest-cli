@@ -36,11 +36,15 @@ def main():
 
 def beauty_print(pr_list):
     """Function for getting formatted print"""
-    for pr in pr_list:
-        print('_' * 20)
-        print('TITLE: %s' % pr['title'])
-        print('DESCRIPTION: %s' % pr['description'])
-        print('LINK: %s' % pr['links']['html']['href'])
+    if len(pr_list) == 0:
+        print('There are no PR assigned to you')
+    else:
+        print('There are %d PR assigned to you' % len(pr_list))
+        for pr in pr_list:
+            print('_' * 20)
+            print('TITLE: %s' % pr['title'])
+            print('DESCRIPTION: %s' % pr['description'])
+            print('LINK: %s' % pr['links']['html']['href'])
 
 
 def get_id_list(username, repository):
