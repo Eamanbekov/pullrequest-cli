@@ -1,5 +1,6 @@
 from os.path import abspath, dirname, join
 from setuptools import find_packages, setup
+from src import __version__
 
 this_dir = abspath(dirname(__file__))
 with open(join(this_dir, 'README.md'), encoding='utf-8') as file:
@@ -10,7 +11,7 @@ try:
     setup(
         name='pullrequest-cli',
         python_requires='>=3.6.2',
-        version='1.0',
+        version=__version__,
         description='A command line program to get bitbucket pullrequests',
         long_description=long_description,
         author='Emir Amanbekov',
