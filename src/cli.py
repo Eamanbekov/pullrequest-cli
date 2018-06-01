@@ -27,7 +27,7 @@ def main():
             part['user']['username'] == args.username
             for part in pr['participants']
         ), pr_list))
-        beauty_print(pr_list)
+        print(beauty_print(pr_list))
     except urllib.error.HTTPError:
         print('Wrong username or repository!')
     except urllib.error.URLError:
@@ -36,15 +36,18 @@ def main():
 
 def beauty_print(pr_list):
     """Function for getting formatted print"""
-    if len(pr_list) == 0:
-        print('There are no PR assigned to you')
-    else:
-        print('There are %d PR assigned to you' % len(pr_list))
+    result = 'There are no PR assigned to you\n'
+    if len(pr_list) != 0:
+        result = []
         for pr in pr_list:
-            print('_' * 20)
-            print('TITLE: %s' % pr['title'])
-            print('DESCRIPTION: %s' % pr['description'])
-            print('LINK: %s' % pr['links']['html']['href'])
+            pr_print = \
+                '_' * 20, \
+                'Title: %s' % pr['title'], \
+                'Description: %s' % pr['description'], \
+                'Link: %s' % pr['links']['html']['href']
+            result.append('\n'.join(pr_print))
+        result = '\n'.join(result)
+    return result
 
 
 def get_id_list(username, repository):
