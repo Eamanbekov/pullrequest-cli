@@ -5,13 +5,20 @@ import urllib.error
 import json
 
 
+BASE_URL = 'https://api.bitbucket.org/2.0/'
+REPOS_URL = BASE_URL + 'repositories/'
+PR_URL = REPOS_URL + '{0}/{1}/pullrequests/'
+OPEN_PR_URL = PR_URL + '?state=OPEN'
+PR_ID_URL = PR_URL + '{2}'
+
+
 def main():
     parser = argparse.ArgumentParser(description='Lets you collect all pull requests')
     parser.add_argument('username', type=str, default=1.0,
                         help='Bitbucket username')
     parser.add_argument('repository', type=str, default=1.0,
                         help='Bitbucket repository name')
-    parser.add_argument('--password', '-p', type=str, default='password',
+    parser.add_argument('--password', '-p', type=str, default='',
                         help='Your bitbucket account password. For private repositories only')
     args = parser.parse_args()
     # Handle some errors
@@ -52,8 +59,7 @@ def beauty_print(pr_list):
 
 def get_id_list(username, repository):
     """Gets all pull request IDs"""
-    url = 'https://api.bitbucket.org/2.0/' \
-          'repositories/%s/%s/pullrequests/?state=OPEN' % (username, repository)
+    url = OPEN_PR_URL.format(username, repository)
     data = get_request(url)
     pr_list = data.get('values')
     id_list = [pr.get('id') for pr in pr_list]
@@ -62,8 +68,7 @@ def get_id_list(username, repository):
 
 def get_pr_by_id(username, repository, pr_id):
     """Gets detailed info about pull request"""
-    url = 'https://api.bitbucket.org/2.0/' \
-          'repositories/%s/%s/pullrequests/%d' % (username, repository, pr_id)
+    url = PR_ID_URL.format(username, repository, pr_id)
     data = get_request(url)
     keys = ['title', 'description', 'participants', 'links']
     data = {key: data[key] for key in keys}
