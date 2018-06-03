@@ -25,3 +25,12 @@ The Pullrequest-cli can be invoked with `pullrequest-cli` command:
     pullrequest-cli <username> <repository-name> [options]
 
 ![Usage Example](https://image.ibb.co/n27QtJ/usage.gif)
+
+### Positional arguments:
+- `username` - Bitbucket username
+- `repository` - Bitbucket repository name
+
+### Optional arguments:
+- `-h` or `--help` - Help message
+- `--password <PASSWORD>` or `-p <PASSWORD>` - Your bitbucket account password. For private repositories only
+- `--browser` or `-b` - Open in browser
