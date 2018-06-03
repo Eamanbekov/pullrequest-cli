@@ -4,6 +4,7 @@ from base64 import b64encode
 from urllib.request import Request, urlopen
 from urllib.error import HTTPError, URLError
 from json import loads
+from webbrowser import open_new_tab
 
 
 BASE_URL = 'https://api.bitbucket.org/2.0/'
@@ -21,6 +22,8 @@ def main():
                         help='Bitbucket repository name')
     parser.add_argument('--password', '-p', type=str, default='',
                         help='Your bitbucket account password. For private repositories only')
+    parser.add_argument('--browser', '-b', help='Open in browser',
+                        action='store_true')
     args = parser.parse_args()
     # Handle some errors
     try:
@@ -35,11 +38,22 @@ def main():
             part['user']['username'] == args.username
             for part in pr['participants']
         ), pr_list))
-        print(beauty_print(pr_list))
+        if args.browser:
+            open_browser(pr_list)
+        else:
+            print(beauty_print(pr_list))
     except HTTPError:
         print('Wrong username or repository!')
     except URLError:
         print('No internet connection!')
+
+
+def open_browser(pr_list):
+    if len(pr_list) == 0:
+        print('There are no PR assigned to you\n')
+    else:
+        for pr in pr_list:
+            open_new_tab(pr['links']['html']['href'])
 
 
 def beauty_print(pr_list):
