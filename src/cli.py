@@ -1,8 +1,9 @@
 #!/usr/bin/env python3.6
 import argparse
-import urllib.request
-import urllib.error
-import json
+from base64 import b64encode
+from urllib.request import Request, urlopen
+from urllib.error import HTTPError, URLError
+from json import loads
 
 
 BASE_URL = 'https://api.bitbucket.org/2.0/'
@@ -23,9 +24,9 @@ def main():
     args = parser.parse_args()
     # Handle some errors
     try:
-        id_list = get_id_list(args.username, args.repository)
+        id_list = get_id_list(args.username, args.repository, args.password)
         pr_list = [
-            get_pr_by_id(args.username, args.repository, pr_id)
+            get_pr_by_id(args.username, args.repository, pr_id, args.password)
             for pr_id in id_list
         ]
         pr_list = list(filter(lambda pr: any(
@@ -35,9 +36,9 @@ def main():
             for part in pr['participants']
         ), pr_list))
         print(beauty_print(pr_list))
-    except urllib.error.HTTPError:
+    except HTTPError:
         print('Wrong username or repository!')
-    except urllib.error.URLError:
+    except URLError:
         print('No internet connection!')
 
 
@@ -57,29 +58,47 @@ def beauty_print(pr_list):
     return result
 
 
-def get_id_list(username, repository):
+def get_id_list(username, repository, password):
     """Gets all pull request IDs"""
     url = OPEN_PR_URL.format(username, repository)
-    data = get_request(url)
+    if password != '':
+        auth = get_auth(username, password)
+        data = get_request(url, auth)
+    else:
+        data = get_request(url)
     pr_list = data.get('values')
     id_list = [pr.get('id') for pr in pr_list]
     return id_list
 
 
-def get_pr_by_id(username, repository, pr_id):
+def get_pr_by_id(username, repository, pr_id, password):
     """Gets detailed info about pull request"""
     url = PR_ID_URL.format(username, repository, pr_id)
-    data = get_request(url)
+    if password != '':
+        auth = get_auth(username, password)
+        data = get_request(url, auth)
+    else:
+        data = get_request(url)
     keys = ['title', 'description', 'participants', 'links']
     data = {key: data[key] for key in keys}
     return data
 
 
-def get_request(url):
+def get_auth(username, password):
+    auth = '{0}:{1}'.format(username, password)
+    auth = b64encode(bytes(auth, 'utf-8'))
+    auth = str(auth)[2:-1]
+    auth = {'Authorization': 'Basic {0}'.format(auth)}
+    return auth
+
+
+def get_request(url, auth=None):
     """Function for making get requests"""
-    request = urllib.request.Request(url)
-    with urllib.request.urlopen(request) as response:
-        data = json.load(response)
+    if auth:
+        request = Request(url, None, auth)
+    else:
+        request = Request(url)
+    data = loads(urlopen(request).read())
     return data
 
 
