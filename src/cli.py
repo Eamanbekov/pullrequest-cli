@@ -1,9 +1,9 @@
 #!/usr/bin/env python3.6
 import argparse
-import base64
-import urllib.request
-import urllib.error
-import json
+from base64 import b64encode
+from urllib.request import Request, urlopen
+from urllib.error import HTTPError, URLError
+from json import loads
 
 
 BASE_URL = 'https://api.bitbucket.org/2.0/'
@@ -36,9 +36,9 @@ def main():
             for part in pr['participants']
         ), pr_list))
         print(beauty_print(pr_list))
-    except urllib.error.HTTPError:
+    except HTTPError:
         print('Wrong username or repository!')
-    except urllib.error.URLError:
+    except URLError:
         print('No internet connection!')
 
 
@@ -86,7 +86,7 @@ def get_pr_by_id(username, repository, pr_id, password):
 
 def get_auth(username, password):
     auth = '{0}:{1}'.format(username, password)
-    auth = base64.b64encode(bytes(auth, 'utf-8'))
+    auth = b64encode(bytes(auth, 'utf-8'))
     auth = str(auth)[2:-1]
     auth = {'Authorization': 'Basic {0}'.format(auth)}
     return auth
@@ -95,10 +95,10 @@ def get_auth(username, password):
 def get_request(url, auth=None):
     """Function for making get requests"""
     if auth:
-        request = urllib.request.Request(url, None, auth)
+        request = Request(url, None, auth)
     else:
-        request = urllib.request.Request(url)
-    data = json.loads(urllib.request.urlopen(request).read())
+        request = Request(url)
+    data = loads(urlopen(request).read())
     return data
 
 
