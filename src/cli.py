@@ -38,8 +38,11 @@ def main():
         else:
             print(beauty_print(pr_list))
     except HTTPError:
-        print('Wrong username or repository!\n'
-              'May be this repository is private. Try it with --password option.')
+        if args.password == '':
+            print('Wrong username or repository!'
+                  'May be this repository is private. Try it with --password option.')
+        else:
+            print('Wrong username, repository or password!')
     except URLError:
         print('No internet connection!')
 

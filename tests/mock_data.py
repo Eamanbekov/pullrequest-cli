@@ -3,3 +3,9 @@ beauty_print_parameters = [{'title': 'Feature/pr', 'description': '* Edit README
 beauty_print_response = '____________________\nTitle: Feature/pr\nDescription: * Edit README\r\n\r\n* README.md edited online with Bitbucket\nLink: https://bitbucket.org/bookinman/test-repo/pull-requests/3'
 
 pr_list_response = [{'participants': [{'role': 'REVIEWER', 'user': {'username': 'bookinman'}, 'approved': False}], 'description': '* Edit README\r\n\r\n* README.md edited online with Bitbucket', 'links': {'html': {'href': 'https://bitbucket.org/bookinman/test-repo/pull-requests/3'}}, 'title': 'Feature/pr'}]
+
+get_request_response = {'values': [{'participants': [{'role': 'REVIEWER', 'user': {'username': 'bookinman'}, 'approved': False}], 'description': '* Edit README\r\n\r\n* README.md edited online with Bitbucket', 'links': {'html': {'href': 'https://bitbucket.org/bookinman/test-repo/pull-requests/3'}}, 'title': 'Feature/pr'}]}
+
+get_request_url = 'https://api.bitbucket.org/2.0/repositories/bookinman/test-repo/pullrequests/?q=state="OPEN"+AND+reviewers.username="bookinman"&fields=values.title,values.links.html,values.description,values.participants.role,values.participants.approved,values.participants.user.username'
+
+get_request_auth = {'Authorization': 'Basic Ym9va2lubWFuOnBhc3N3b3Jk'}
