@@ -27,6 +27,9 @@ class TestCli(TestCase):
 
         self.assertTrue(type(cli.beauty_print(mock_data.beauty_print_parameters)) is str)
 
+    def test_get_auth(self):
+        self.assertEqual(cli.get_auth('bookinman', 'password'), mock_data.get_request_auth)
+
 
 if __name__ == '__main__':
     main()
