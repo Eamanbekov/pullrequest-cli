@@ -6,6 +6,9 @@ from tests import mock_data
 
 class TestCli(unittest.TestCase):
 
+    def test_get_pr_list(self):
+        self.assertEqual(cli.get_pr_list('bookinman', 'test-repo', ''), mock_data.pr_list_response)
+
     def test_get_id_list(self):
         self.assertEqual(cli.get_id_list('bookinman', 'test-repo', ''), [3, 1])
 
