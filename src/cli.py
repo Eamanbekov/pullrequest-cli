@@ -15,8 +15,6 @@ FIELD_FILTER = 'fields=values.title,values.links.html,values.description,' \
                                       'values.participants.role,' \
                                       'values.participants.approved,values.participants.user.username'
 FILTER_URL = PR_URL + '?' + QUERY_FILTER + '&' + FIELD_FILTER
-OPEN_PR_URL = PR_URL + '?state=OPEN'
-PR_ID_URL = PR_URL + '{2}'
 
 
 def main():
