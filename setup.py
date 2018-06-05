@@ -3,7 +3,7 @@ from setuptools import find_packages, setup
 from src import __version__
 
 this_dir = abspath(dirname(__file__))
-with open(join(this_dir, 'README.md'), encoding='utf-8') as file:
+with open(join(this_dir, 'README.rst'), encoding='utf-8') as file:
     long_description = file.read()
 
 # Actual setup with handling import errors
