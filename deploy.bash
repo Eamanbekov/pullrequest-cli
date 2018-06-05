@@ -9,7 +9,7 @@ cat <<EOF >> ~/.pypirc
 [distutils]
 index-servers=pypi
 [pypi]
-repository=https://upload.pypi.org/pypi
+repository=$PYPI_URL
 username=$PYPI_USERNAME
 password=$PYPI_PASSWORD
 EOF
