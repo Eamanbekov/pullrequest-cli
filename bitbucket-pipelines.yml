@@ -2,7 +2,17 @@ image: python:3.6.2
 
 pipelines:
   default:
-    - step:
-        script:
-          - python -m unittest discover tests
-          - pip install -e .
+      - step:
+          name: Tests
+          script:
+            - python -m unittest discover tests
+  branches:
+    master:
+      - step:
+          name: Tests
+          script:
+            - python -m unittest discover tests
+      - step:
+          name: Deploy To PyPI
+          script:
+            - deploy.bash
