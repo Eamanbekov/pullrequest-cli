@@ -15,4 +15,4 @@ pipelines:
       - step:
           name: Deploy To PyPI
           script:
-            - bashe -e deploy.bash
+            - bash -e deploy.bash
